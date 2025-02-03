@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\HealthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +14,6 @@ use App\Http\Controllers\API\HealthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-// Health check route
-Route::get('/health', [HealthController::class, 'check']);
 
 // Public routes
 Route::post('/auth/register', [AuthController::class, 'register']);
