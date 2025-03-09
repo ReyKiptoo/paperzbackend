@@ -2,20 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class College extends Model
 {
-    use HasFactory;
-
     /**
      * The primary key for the model.
      *
      * @var string
      */
-    protected $primaryKey = 'college_id';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -23,9 +20,8 @@ class College extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'college_code',
-        'college_name',
-        'description',
+        'id',
+        'name',
     ];
 
     /**
@@ -33,6 +29,6 @@ class College extends Model
      */
     public function courses(): HasMany
     {
-        return $this->hasMany(Course::class, 'college_id');
+        return $this->hasMany(Course::class);
     }
 }
