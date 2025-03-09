@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CollegeController;
+use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\PastPaperController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +28,26 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Admin routes
+// Admin Routes
 Route::middleware('auth')->group(function () {
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Admin Resource Routes
+    Route::name('admin.')->group(function () {
+        // User Management
+        Route::resource('users', UserController::class);
+        
+        // Colleges Management
+        Route::resource('colleges', CollegeController::class);
+        
+        // Courses Management
+        Route::resource('courses', CourseController::class);
+        
+        // Units Management
+        Route::resource('units', UnitController::class);
+        
+        // Past Papers Management
+        Route::resource('papers', PastPaperController::class);
+    });
 });
