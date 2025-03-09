@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
     public function showLoginForm()
     {
         return view('auth.login');
@@ -25,9 +30,11 @@ class LoginController extends Controller
             return redirect()->intended('/dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->withInput($request->only('email', 'remember'));
+        return back()
+            ->withInput($request->only('email', 'remember'))
+            ->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
     }
 
     public function logout(Request $request)
