@@ -1,21 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminDashboardController;
 
-// All routes should be within the web middleware group for proper session and CSRF handling
-Route::middleware(['web'])->group(function () {
-    // Authentication Routes - Direct access to login
-    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
 
-    // Protected Routes (require authentication)
-    Route::middleware(['auth'])->group(function () {
-        // Dashboard
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-        
-        // Future routes for colleges, courses, units, and past papers will go here
-    });
+Route::get('/', function () {
+    return view('welcome');
 });
