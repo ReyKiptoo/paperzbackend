@@ -9,45 +9,34 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\PastPaperController;
 use App\Http\Controllers\Admin\UserController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-// Authentication Routes
+// Guest Routes
 Route::middleware('guest')->group(function () {
-    Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+    // Redirect root to login for streamlined authentication
+    Route::get('/', function () {
+        return redirect('/login');
+    });
+
+    // Authentication Routes
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
 });
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
-
-// Admin Routes
-Route::middleware('auth')->group(function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Admin Resource Routes
-    Route::name('admin.')->group(function () {
-        // User Management
-        Route::resource('users', UserController::class);
-        
-        // Colleges Management
-        Route::resource('colleges', CollegeController::class);
-        
-        // Courses Management
-        Route::resource('courses', CourseController::class);
-        
-        // Units Management
-        Route::resource('units', UnitController::class);
-        
-        // Past Papers Management
-        Route::resource('papers', PastPaperController::class);
-    });
+// Admin Routes (authenticated)
+Route::prefix('admin')->middleware('auth')->group(function () {
+    // Dashboard as the main landing page
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+    
+    // Resource Routes for CRUD operations
+    Route::resource('colleges', CollegeController::class)->names('admin.colleges');
+    Route::resource('courses', CourseController::class)->names('admin.courses');
+    Route::resource('units', UnitController::class)->names('admin.units');
+    Route::resource('papers', PastPaperController::class)->names('admin.papers');
+    Route::get('papers/{paper}/download', [PastPaperController::class, 'download'])->name('admin.papers.download');
+    Route::resource('users', UserController::class)->names('admin.users');
+    
+    // Logout Route (inside admin group to use admin prefix)
+    Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 });
+
+// Fallback logout route for compatibility
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');

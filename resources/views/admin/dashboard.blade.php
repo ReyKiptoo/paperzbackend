@@ -16,7 +16,7 @@
                 </div>
                 <span class="text-green-500 text-sm font-medium">+2.5%</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">{{ $stats['colleges'] }}</p>
+            <p class="text-3xl font-bold text-gray-900">{{ $stats['colleges'] ?? 0 }}</p>
             <a href="{{ route('admin.colleges.index') }}" class="mt-4 text-sm text-primary hover:text-primary-dark">View Details →</a>
         </div>
 
@@ -32,7 +32,7 @@
                 </div>
                 <span class="text-green-500 text-sm font-medium">+4.2%</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">{{ $stats['courses'] }}</p>
+            <p class="text-3xl font-bold text-gray-900">{{ $stats['courses'] ?? 0 }}</p>
             <a href="{{ route('admin.courses.index') }}" class="mt-4 text-sm text-primary hover:text-primary-dark">View Details →</a>
         </div>
 
@@ -48,7 +48,7 @@
                 </div>
                 <span class="text-green-500 text-sm font-medium">+3.1%</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">{{ $stats['units'] }}</p>
+            <p class="text-3xl font-bold text-gray-900">{{ $stats['units'] ?? 0 }}</p>
             <a href="{{ route('admin.units.index') }}" class="mt-4 text-sm text-primary hover:text-primary-dark">View Details →</a>
         </div>
 
@@ -64,54 +64,24 @@
                 </div>
                 <span class="text-red-500 text-sm font-medium">-0.3%</span>
             </div>
-            <p class="text-3xl font-bold text-gray-900">{{ $stats['papers'] }}</p>
+            <p class="text-3xl font-bold text-gray-900">{{ $stats['papers'] ?? 0 }}</p>
             <a href="{{ route('admin.papers.index') }}" class="mt-4 text-sm text-primary hover:text-primary-dark">View Details →</a>
         </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Recent Activity -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-semibold text-gray-800">Recent Activity</h2>
-                    <a href="#" class="text-sm text-primary hover:text-primary-dark">View All</a>
-                </div>
-                <div class="space-y-4">
-                    @foreach(App\Models\User::latest()->take(5)->get() as $user)
-                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div class="flex items-center">
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=FF6B6B&color=fff" alt="User avatar" class="h-10 w-10 rounded-full">
-                            <div class="ml-4">
-                                <p class="text-sm font-medium text-gray-900">{{ $user->name }}</p>
-                                <p class="text-xs text-gray-500">{{ $user->email }}</p>
-                            </div>
-                        </div>
-                        <span class="text-xs text-gray-500">{{ $user->created_at->diffForHumans() }}</span>
+        
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <div class="p-2 bg-indigo-100 rounded-lg">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
                     </div>
-                    @endforeach
+                    <h3 class="ml-3 text-lg font-medium text-gray-900">Users</h3>
                 </div>
+                <span class="text-green-500 text-sm font-medium">+1.8%</span>
             </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-semibold text-gray-800">Quick Stats</h2>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1 text-sm bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200">Week</button>
-                        <button class="px-3 py-1 text-sm bg-primary text-white rounded-full">Month</button>
-                        <button class="px-3 py-1 text-sm bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200">Year</button>
-                    </div>
-                </div>
-                <div class="relative h-64">
-                    <!-- Placeholder for chart - you can integrate a charting library like Chart.js here -->
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-400">
-                        <p>Chart will be displayed here</p>
-                    </div>
-                </div>
-            </div>
+            <p class="text-3xl font-bold text-gray-900">{{ $stats['users'] ?? 0 }}</p>
+            <a href="{{ route('admin.users.index') }}" class="mt-4 text-sm text-primary hover:text-primary-dark">View Details →</a>
         </div>
     </div>
 
@@ -154,6 +124,15 @@
                         </svg>
                     </div>
                     <span class="ml-3 font-medium text-gray-900">Upload Paper</span>
+                </a>
+                
+                <a href="{{ route('admin.users.create') }}" class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div class="p-2 bg-indigo-100 rounded-lg">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                    </div>
+                    <span class="ml-3 font-medium text-gray-900">Add User</span>
                 </a>
             </div>
         </div>

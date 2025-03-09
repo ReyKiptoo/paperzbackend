@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Paperz Admin') }}</title>
+    <!-- Prevent caching of this page -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -19,6 +23,24 @@
                     }
                 }
             }
+        }
+        
+        // Check authentication status when navigating back
+        if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD) {
+            // When using browser back button, check if user is still authenticated
+            fetch('/admin', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => {
+                if (response.redirected || response.status === 401 || response.status === 419) {
+                    window.location.href = '/login';
+                }
+            })
+            .catch(() => {
+                window.location.href = '/login';
+            });
         }
     </script>
     <style>
@@ -41,7 +63,7 @@
             </div>
             <nav class="mt-4">
                 <div class="px-4 py-2 text-xs uppercase text-gray-400 tracking-wider">General</div>
-                <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-gray-300 hover:bg-sidebar-hover {{ request()->routeIs('dashboard') ? 'bg-sidebar-hover' : '' }}">
+                <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-gray-300 hover:bg-sidebar-hover {{ request()->routeIs('admin.dashboard') ? 'bg-sidebar-hover' : '' }}">
                     <div class="flex items-center">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -93,7 +115,7 @@
                 </a>
 
                 <div class="px-4 py-2 mt-4 text-xs uppercase text-gray-400 tracking-wider">Account</div>
-                <form method="POST" action="{{ route('logout') }}" class="block">
+                <form method="POST" action="{{ route('admin.logout') }}" class="block">
                     @csrf
                     <button type="submit" class="w-full px-4 py-2 text-left text-gray-300 hover:bg-sidebar-hover">
                         <div class="flex items-center">

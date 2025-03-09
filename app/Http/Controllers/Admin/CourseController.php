@@ -37,7 +37,7 @@ class CourseController extends Controller
 
         Course::create($validated);
 
-        return redirect()->route('admin.courses.index')
+        return redirect()->route('courses.index')
             ->with('success', 'Course created successfully.');
     }
 
@@ -58,7 +58,7 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return redirect()->route('admin.courses.index')
+        return redirect()->route('courses.index')
             ->with('success', 'Course updated successfully.');
     }
 
@@ -66,7 +66,7 @@ class CourseController extends Controller
     {
         $course->delete();
 
-        return redirect()->route('admin.courses.index')
+        return redirect()->route('courses.index')
             ->with('success', 'Course deleted successfully.');
     }
 }

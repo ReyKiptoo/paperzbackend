@@ -39,7 +39,7 @@ class UnitController extends Controller
 
         Unit::create($validated);
 
-        return redirect()->route('admin.units.index')
+        return redirect()->route('units.index')
             ->with('success', 'Unit created successfully.');
     }
 
@@ -62,7 +62,7 @@ class UnitController extends Controller
 
         $unit->update($validated);
 
-        return redirect()->route('admin.units.index')
+        return redirect()->route('units.index')
             ->with('success', 'Unit updated successfully.');
     }
 
@@ -70,7 +70,7 @@ class UnitController extends Controller
     {
         $unit->delete();
 
-        return redirect()->route('admin.units.index')
+        return redirect()->route('units.index')
             ->with('success', 'Unit deleted successfully.');
     }
 }

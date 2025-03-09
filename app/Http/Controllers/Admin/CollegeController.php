@@ -27,13 +27,13 @@ class CollegeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:colleges',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
         College::create($validated);
 
-        return redirect()->route('admin.colleges.index')
+        return redirect()->route('colleges.index')
             ->with('success', 'College created successfully.');
     }
 
@@ -45,13 +45,13 @@ class CollegeController extends Controller
     public function update(Request $request, College $college)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:colleges,name,' . $college->id,
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
         $college->update($validated);
 
-        return redirect()->route('admin.colleges.index')
+        return redirect()->route('colleges.index')
             ->with('success', 'College updated successfully.');
     }
 
@@ -59,7 +59,7 @@ class CollegeController extends Controller
     {
         $college->delete();
 
-        return redirect()->route('admin.colleges.index')
+        return redirect()->route('colleges.index')
             ->with('success', 'College deleted successfully.');
     }
 }

@@ -35,31 +35,21 @@ class PastPaperController extends Controller
             'title' => 'required|string|max:255',
             'unit_id' => 'required|exists:units,id',
             'year' => 'required|integer|min:2000|max:' . date('Y'),
-            'type' => 'required|in:CAT,Main Exam',
             'file' => 'required|file|mimes:pdf|max:10240', // Max 10MB
             'description' => 'nullable|string',
+            'exam_type' => 'required|string|in:CAT1,CAT2,Main', // Add more types if needed
         ]);
 
         // Handle file upload
-        $path = $request->file('file')->store('past_papers', 'public');
-        
-        // Create past paper record
-        PastPaper::create([
-            'title' => $validated['title'],
-            'unit_id' => $validated['unit_id'],
-            'year' => $validated['year'],
-            'type' => $validated['type'],
-            'file_path' => $path,
-            'description' => $validated['description'] ?? null,
-        ]);
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('past_papers', 'public');
+            $validated['file_path'] = $path;
+        }
 
-        return redirect()->route('admin.papers.index')
+        PastPaper::create($validated);
+
+        return redirect()->route('papers.index')
             ->with('success', 'Past Paper uploaded successfully.');
-    }
-
-    public function show(PastPaper $paper)
-    {
-        return Storage::disk('public')->download($paper->file_path, $paper->title . '.pdf');
     }
 
     public function edit(PastPaper $paper)
@@ -74,15 +64,17 @@ class PastPaperController extends Controller
             'title' => 'required|string|max:255',
             'unit_id' => 'required|exists:units,id',
             'year' => 'required|integer|min:2000|max:' . date('Y'),
-            'type' => 'required|in:CAT,Main Exam',
             'file' => 'nullable|file|mimes:pdf|max:10240', // Max 10MB
             'description' => 'nullable|string',
+            'exam_type' => 'required|string|in:CAT1,CAT2,Main',
         ]);
 
         // Handle file upload if new file is provided
         if ($request->hasFile('file')) {
             // Delete old file
-            Storage::disk('public')->delete($paper->file_path);
+            if ($paper->file_path) {
+                Storage::disk('public')->delete($paper->file_path);
+            }
             
             // Store new file
             $path = $request->file('file')->store('past_papers', 'public');
@@ -91,19 +83,29 @@ class PastPaperController extends Controller
 
         $paper->update($validated);
 
-        return redirect()->route('admin.papers.index')
+        return redirect()->route('papers.index')
             ->with('success', 'Past Paper updated successfully.');
     }
 
     public function destroy(PastPaper $paper)
     {
-        // Delete file from storage
-        Storage::disk('public')->delete($paper->file_path);
-        
-        // Delete record
+        // Delete the file from storage
+        if ($paper->file_path) {
+            Storage::disk('public')->delete($paper->file_path);
+        }
+
         $paper->delete();
 
-        return redirect()->route('admin.papers.index')
+        return redirect()->route('papers.index')
             ->with('success', 'Past Paper deleted successfully.');
+    }
+
+    public function download(PastPaper $paper)
+    {
+        if (!$paper->file_path || !Storage::disk('public')->exists($paper->file_path)) {
+            return back()->with('error', 'File not found.');
+        }
+
+        return Storage::disk('public')->download($paper->file_path, $paper->title . '.pdf');
     }
 }

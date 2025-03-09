@@ -2,21 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Unit extends Model
 {
-    use HasFactory;
-
     /**
      * The primary key for the model.
      *
      * @var string
      */
-    protected $primaryKey = 'unit_id';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +19,7 @@ class Unit extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'course_id',
         'year_semester',
         'unit_code',
@@ -33,16 +29,16 @@ class Unit extends Model
     /**
      * Get the course that owns the unit.
      */
-    public function course(): BelongsTo
+    public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**
      * Get the past papers for the unit.
      */
-    public function pastPapers(): HasMany
+    public function pastPapers()
     {
-        return $this->hasMany(PastPaper::class, 'unit_id');
+        return $this->hasMany(PastPaper::class);
     }
 }
