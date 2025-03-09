@@ -48,7 +48,7 @@ class PastPaperController extends Controller
 
         PastPaper::create($validated);
 
-        return redirect()->route('papers.index')
+        return redirect()->route('admin.papers.index')
             ->with('success', 'Past Paper uploaded successfully.');
     }
 
@@ -83,7 +83,7 @@ class PastPaperController extends Controller
 
         $paper->update($validated);
 
-        return redirect()->route('papers.index')
+        return redirect()->route('admin.papers.index')
             ->with('success', 'Past Paper updated successfully.');
     }
 
@@ -96,7 +96,7 @@ class PastPaperController extends Controller
 
         $paper->delete();
 
-        return redirect()->route('papers.index')
+        return redirect()->route('admin.papers.index')
             ->with('success', 'Past Paper deleted successfully.');
     }
 

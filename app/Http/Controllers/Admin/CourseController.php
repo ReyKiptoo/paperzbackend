@@ -37,13 +37,15 @@ class CourseController extends Controller
 
         Course::create($validated);
 
-        return redirect()->route('courses.index')
+        return redirect()->route('admin.courses.index')
             ->with('success', 'Course created successfully.');
     }
 
     public function edit(Course $course)
     {
         $colleges = College::all();
+        $course->load('units.pastPapers');
+        
         return view('admin.courses.edit', compact('course', 'colleges'));
     }
 
@@ -58,7 +60,7 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return redirect()->route('courses.index')
+        return redirect()->route('admin.courses.index')
             ->with('success', 'Course updated successfully.');
     }
 
@@ -66,7 +68,7 @@ class CourseController extends Controller
     {
         $course->delete();
 
-        return redirect()->route('courses.index')
+        return redirect()->route('admin.courses.index')
             ->with('success', 'Course deleted successfully.');
     }
 }

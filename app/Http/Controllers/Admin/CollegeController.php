@@ -33,7 +33,7 @@ class CollegeController extends Controller
 
         College::create($validated);
 
-        return redirect()->route('colleges.index')
+        return redirect()->route('admin.colleges.index')
             ->with('success', 'College created successfully.');
     }
 
@@ -51,7 +51,7 @@ class CollegeController extends Controller
 
         $college->update($validated);
 
-        return redirect()->route('colleges.index')
+        return redirect()->route('admin.colleges.index')
             ->with('success', 'College updated successfully.');
     }
 
@@ -59,7 +59,7 @@ class CollegeController extends Controller
     {
         $college->delete();
 
-        return redirect()->route('colleges.index')
+        return redirect()->route('admin.colleges.index')
             ->with('success', 'College deleted successfully.');
     }
 }

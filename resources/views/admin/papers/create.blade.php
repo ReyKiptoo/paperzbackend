@@ -4,92 +4,74 @@
 <div class="container mx-auto px-6 py-8">
     <div class="flex items-center justify-between">
         <h2 class="text-2xl font-semibold text-gray-900">Upload Past Paper</h2>
-        <a href="{{ route('admin.papers.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+        <a href="{{ route('admin.papers.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2.5 px-5 rounded-md shadow transition duration-200">
             Back to Papers
         </a>
     </div>
 
     <div class="mt-8">
-        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow overflow-hidden">
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
             <form action="{{ route('admin.papers.store') }}" method="POST" enctype="multipart/form-data" class="p-8">
                 @csrf
 
                 <div class="space-y-6">
-                    <div>
-                        <label for="unit_id" class="block text-sm font-medium text-gray-700">Unit</label>
-                        <div class="mt-1">
-                            <select name="unit_id" id="unit_id"
-                                class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md @error('unit_id') border-red-300 @enderror">
-                                <option value="">Select Unit</option>
-                                @foreach($units as $unit)
-                                    <option value="{{ $unit->id }}" {{ old('unit_id') == $unit->id ? 'selected' : '' }}>
-                                        {{ $unit->name }} ({{ $unit->course->name }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('unit_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <x-form-select 
+                        name="unit_id"
+                        label="Unit"
+                        required
+                    >
+                        <option value="">Select Unit</option>
+                        @foreach($units as $unit)
+                            <option value="{{ $unit->id }}" {{ old('unit_id') == $unit->id ? 'selected' : '' }}>
+                                {{ $unit->name }} ({{ $unit->course->name }})
+                            </option>
+                        @endforeach
+                    </x-form-select>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <x-form-input 
+                            type="number"
+                            name="year"
+                            label="Year"
+                            value="{{ old('year', date('Y')) }}"
+                            min="2000"
+                            max="{{ date('Y') }}"
+                            required
+                        />
+
+                        <x-form-select 
+                            name="type"
+                            label="Paper Type"
+                            required
+                        >
+                            <option value="">Select Type</option>
+                            <option value="CAT" {{ old('type') == 'CAT' ? 'selected' : '' }}>CAT</option>
+                            <option value="Main Exam" {{ old('type') == 'Main Exam' ? 'selected' : '' }}>Main Exam</option>
+                            <option value="Supplementary" {{ old('type') == 'Supplementary' ? 'selected' : '' }}>Supplementary</option>
+                        </x-form-select>
                     </div>
 
-                    <div>
-                        <label for="year" class="block text-sm font-medium text-gray-700">Year</label>
-                        <div class="mt-1">
-                            <input type="number" name="year" id="year" value="{{ old('year', date('Y')) }}"
-                                class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md @error('year') border-red-300 @enderror"
-                                min="2000" max="{{ date('Y') }}">
-                            @error('year')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700">Paper Type</label>
-                        <div class="mt-1">
-                            <select name="type" id="type"
-                                class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md @error('type') border-red-300 @enderror">
-                                <option value="">Select Type</option>
-                                <option value="CAT" {{ old('type') == 'CAT' ? 'selected' : '' }}>CAT</option>
-                                <option value="Main Exam" {{ old('type') == 'Main Exam' ? 'selected' : '' }}>Main Exam</option>
-                                <option value="Supplementary" {{ old('type') == 'Supplementary' ? 'selected' : '' }}>Supplementary</option>
-                            </select>
-                            @error('type')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="file" class="block text-sm font-medium text-gray-700">Paper File (PDF)</label>
-                        <div class="mt-1">
-                            <input type="file" name="file" id="file" accept=".pdf"
-                                class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md @error('file') border-red-300 @enderror">
-                            @error('file')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <x-form-file 
+                        name="file"
+                        label="Paper File (PDF)"
+                        accept=".pdf"
+                        required
+                    >
                         <p class="mt-2 text-sm text-gray-500">Upload a PDF file. Maximum size: 10MB</p>
-                    </div>
+                    </x-form-file>
 
-                    <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700">Description (Optional)</label>
-                        <div class="mt-1">
-                            <textarea name="description" id="description" rows="3"
-                                class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md @error('description') border-red-300 @enderror"
-                                placeholder="Any additional notes about this paper...">{{ old('description') }}</textarea>
-                            @error('description')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
+                    <x-form-textarea 
+                        name="description"
+                        label="Description (Optional)"
+                        placeholder="Any additional notes about this paper..."
+                        value="{{ old('description') }}"
+                        rows="4"
+                    />
 
-                    <div class="flex justify-end">
-                        <button type="submit"
-                            class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    <div class="flex justify-end pt-4">
+                        <x-form-button>
                             Upload Paper
-                        </button>
+                        </x-form-button>
                     </div>
                 </div>
             </form>

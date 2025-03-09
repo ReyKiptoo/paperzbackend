@@ -4,13 +4,13 @@
 <div class="container mx-auto px-6 py-8">
     <div class="flex items-center justify-between">
         <h2 class="text-2xl font-semibold text-gray-900">Units</h2>
-        <a href="{{ route('admin.units.create') }}" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded">
+        <a href="{{ route('admin.units.create') }}" class="bg-primary hover:bg-primary-dark text-white font-medium py-2.5 px-5 rounded-md shadow transition duration-200">
             Add New Unit
         </a>
     </div>
 
     <div class="mt-8">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="bg-white shadow-md overflow-hidden sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -49,21 +49,14 @@
                                 <div class="text-sm text-gray-500">Semester {{ $unit->semester }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $unit->past_papers_count }} Papers</div>
+                                <div class="text-sm text-gray-900">{{ $unit->pastPapers()->count() ?? 0 }} Papers</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-3">
-                                    <a href="{{ route('admin.units.edit', $unit) }}" class="text-primary hover:text-primary-dark">
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('admin.units.destroy', $unit) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this unit? This will also delete all associated past papers.')">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <x-table-actions
+                                    editRoute="{{ route('admin.units.edit', $unit) }}"
+                                    deleteRoute="{{ route('admin.units.destroy', $unit) }}"
+                                    itemName="unit"
+                                />
                             </td>
                         </tr>
                     @empty

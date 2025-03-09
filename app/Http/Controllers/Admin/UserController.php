@@ -37,7 +37,7 @@ class UserController extends Controller
         $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success', 'User created successfully.');
     }
 
@@ -62,7 +62,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success', 'User updated successfully.');
     }
 
@@ -70,13 +70,13 @@ class UserController extends Controller
     {
         // Prevent deleting yourself
         if ($user->id === auth()->id()) {
-            return redirect()->route('users.index')
+            return redirect()->route('admin.users.index')
                 ->with('error', 'You cannot delete your own account.');
         }
 
         $user->delete();
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success', 'User deleted successfully.');
     }
 }

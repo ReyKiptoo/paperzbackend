@@ -4,13 +4,13 @@
 <div class="container mx-auto px-6 py-8">
     <div class="flex items-center justify-between">
         <h2 class="text-2xl font-semibold text-gray-900">Courses</h2>
-        <a href="{{ route('admin.courses.create') }}" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded">
+        <a href="{{ route('admin.courses.create') }}" class="bg-primary hover:bg-primary-dark text-white font-medium py-2.5 px-5 rounded-md shadow transition duration-200">
             Add New Course
         </a>
     </div>
 
     <div class="mt-8">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="bg-white shadow-md overflow-hidden sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -44,24 +44,17 @@
                                 <div class="text-sm text-gray-900">{{ $course->college->name }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $course->units_count ?? 0 }} Units</div>
+                                <div class="text-sm text-gray-900">{{ $course->units->count() ?? 0 }} Units</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $course->created_at->format('M d, Y') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-3">
-                                    <a href="{{ route('admin.courses.edit', $course) }}" class="text-primary hover:text-primary-dark">
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('admin.courses.destroy', $course) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this course?')">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <x-table-actions
+                                    editRoute="{{ route('admin.courses.edit', $course) }}"
+                                    deleteRoute="{{ route('admin.courses.destroy', $course) }}"
+                                    itemName="course"
+                                />
                             </td>
                         </tr>
                     @empty

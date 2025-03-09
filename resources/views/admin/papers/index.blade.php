@@ -4,13 +4,13 @@
 <div class="container mx-auto px-6 py-8">
     <div class="flex items-center justify-between">
         <h2 class="text-2xl font-semibold text-gray-900">Past Papers</h2>
-        <a href="{{ route('admin.papers.create') }}" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded">
+        <a href="{{ route('admin.papers.create') }}" class="bg-primary hover:bg-primary-dark text-white font-medium py-2.5 px-5 rounded-md shadow transition duration-200">
             Upload New Paper
         </a>
     </div>
 
     <div class="mt-8">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -58,23 +58,19 @@
                                     {{ $paper->created_at->diffForHumans() }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex space-x-3">
+                                    <div class="flex space-x-4">
                                         <a href="{{ route('admin.papers.download', $paper) }}" 
-                                            class="text-primary hover:text-primary-dark">
+                                           class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-3 py-1.5 rounded-md text-sm font-medium transition duration-200 flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                            </svg>
                                             Download
                                         </a>
-                                        <a href="{{ route('admin.papers.edit', $paper) }}" 
-                                            class="text-indigo-600 hover:text-indigo-900">
-                                            Edit
-                                        </a>
-                                        <form action="{{ route('admin.papers.destroy', $paper) }}" method="POST" 
-                                            class="inline" onsubmit="return confirm('Are you sure you want to delete this paper?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">
-                                                Delete
-                                            </button>
-                                        </form>
+                                        <x-table-actions
+                                            editRoute="{{ route('admin.papers.edit', $paper) }}"
+                                            deleteRoute="{{ route('admin.papers.destroy', $paper) }}"
+                                            itemName="paper"
+                                        />
                                     </div>
                                 </td>
                             </tr>

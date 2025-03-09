@@ -171,5 +171,8 @@
             </div>
         </div>
     </div>
+    
+    <!-- Scripts -->
+    @stack('scripts')
 </body>
 </html>
