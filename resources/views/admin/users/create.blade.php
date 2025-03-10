@@ -33,6 +33,38 @@
                     />
 
                     <x-form-input 
+                        type="tel"
+                        name="phone_number"
+                        label="Phone Number"
+                        placeholder="Enter phone number"
+                        value="{{ old('phone_number') }}"
+                    />
+
+                    <x-form-input 
+                        name="college"
+                        label="College"
+                        placeholder="Enter college name"
+                        value="{{ old('college') }}"
+                    />
+
+                    <x-form-input 
+                        name="course"
+                        label="Course"
+                        placeholder="Enter course name"
+                        value="{{ old('course') }}"
+                    />
+
+                    <x-form-input 
+                        type="number"
+                        name="year"
+                        label="Year"
+                        placeholder="Enter year of study"
+                        value="{{ old('year') }}"
+                        min="1"
+                        max="6"
+                    />
+
+                    <x-form-input 
                         type="password"
                         name="password"
                         label="Password"

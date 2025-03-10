@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CollegeController;
+use App\Http\Controllers\API\CourseController;
+use App\Http\Controllers\API\UnitController;
+use App\Http\Controllers\API\PastPaperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +22,12 @@ use App\Http\Controllers\API\AuthController;
 // Public routes
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+
+// Public data endpoints
+Route::get('/colleges', [CollegeController::class, 'index']);
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/units', [UnitController::class, 'index']);
+Route::get('/papers', [PastPaperController::class, 'index']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {

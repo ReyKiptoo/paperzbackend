@@ -52,7 +52,7 @@
 <body class="bg-gray-50">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <div class="w-64 bg-sidebar text-white">
+        <div class="w-64 bg-sidebar text-white flex-shrink-0">
             <div class="p-4 border-b border-sidebar-hover">
                 <h1 class="text-xl font-bold text-white flex items-center">
                     <svg class="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -69,6 +69,16 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
                         Dashboard
+                    </div>
+                </a>
+
+                <div class="px-4 py-2 mt-4 text-xs uppercase text-gray-400 tracking-wider">UPLOAD</div>
+                <a href="{{ route('admin.papers.create') }}" class="block px-4 py-2 my-3 text-white hover:bg-primary-dark bg-primary rounded-md mx-2 transition duration-200 {{  request()->routeIs('admin.papers.create') ? 'bg-primary-dark' : '' }}">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                        </svg>
+                        <span class="font-bold">Past Paper</span>
                     </div>
                 </a>
 
