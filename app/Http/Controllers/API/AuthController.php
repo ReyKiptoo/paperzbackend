@@ -24,6 +24,9 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'phone_number' => 'required|string|unique:users',
             'password' => 'required|string|min:8',
+            'college' => 'required|integer|exists:colleges,id',
+            'course' => 'required|integer|exists:courses,id',
+            'year' => 'required|integer|min:1|max:6',
         ]);
 
         if ($validator->fails()) {
@@ -38,6 +41,9 @@ class AuthController extends Controller
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
+            'college' => $request->college,
+            'course' => $request->course,
+            'year' => $request->year,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
