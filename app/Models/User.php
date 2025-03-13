@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -49,5 +50,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the college that the user belongs to.
+     */
+    public function collegeRelation(): BelongsTo
+    {
+        return $this->belongsTo(College::class, 'college');
+    }
+
+    /**
+     * Get the course that the user belongs to.
+     */
+    public function courseRelation(): BelongsTo
+    {
+        return $this->belongsTo(Course::class, 'course');
     }
 }

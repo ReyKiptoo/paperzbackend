@@ -107,13 +107,32 @@ class AuthController extends Controller
     }
 
     /**
-     * Get authenticated user details.
+     * Get authenticated user details including college and course information.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        $user->load(['collegeRelation', 'courseRelation']);
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone_number' => $user->phone_number,
+            'year' => $user->year,
+            'college' => [
+                'id' => $user->college,
+                'name' => $user->collegeRelation->name ?? null
+            ],
+            'course' => [
+                'id' => $user->course,
+                'name' => $user->courseRelation->name ?? null
+            ],
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at
+        ]);
     }
 }
