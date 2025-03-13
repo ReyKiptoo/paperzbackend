@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Unit;
+use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class UnitController extends Controller
 {
@@ -20,6 +22,50 @@ class UnitController extends Controller
         return response()->json([
             'success' => true,
             'data' => $units
+        ]);
+    }
+
+    /**
+     * Get units by course and year
+     *
+     * @param int $courseId
+     * @param string $year
+     * @return JsonResponse
+     */
+    public function getUnitsByCourseAndYear($courseId, $year): JsonResponse
+    {
+        // Validate course exists
+        $course = Course::find($courseId);
+        if (!$course) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Course not found'
+            ], 404);
+        }
+
+        // Validate year format
+        if (!is_numeric($year) || $year < 1 || $year > 6) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid year. Must be between 1 and 6'
+            ], 400);
+        }
+
+        $units = Unit::with('course')
+            ->where('course_id', $courseId)
+            ->where('year_semester', $year)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'course' => [
+                    'id' => $course->id,
+                    'name' => $course->name
+                ],
+                'year' => $year,
+                'units' => $units
+            ]
         ]);
     }
 

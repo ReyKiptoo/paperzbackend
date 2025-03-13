@@ -27,6 +27,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/colleges', [CollegeController::class, 'index']);
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/units', [UnitController::class, 'index']);
+Route::get('/courses/{course}/units/{year}', [UnitController::class, 'getUnitsByCourseAndYear']);
 Route::get('/papers', [PastPaperController::class, 'index']);
 
 // Protected routes
