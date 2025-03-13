@@ -26,7 +26,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:8',
             'college' => 'required|integer|exists:colleges,id',
             'course' => 'required|integer|exists:courses,id',
-            'year' => 'required|integer|min:1|max:6',
+            'year' => 'required|numeric|min:1|max:6|decimal:0,1', // Updated to allow one decimal place
         ]);
 
         if ($validator->fails()) {
